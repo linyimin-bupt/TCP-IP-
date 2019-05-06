@@ -1,3 +1,4 @@
 .vscode/*
-
-./lib
+.idea
+lib/cmake-build-debug
+lib/CMakeLists.txt
