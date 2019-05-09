@@ -78,7 +78,7 @@ int main(int argc, char *argv[]) {
             // 接收客户端发送过来的数据
             int rev_len = 0;
             int str_len = 0;
-            while ((rev_len = read(client_sock, message, BUF_SIZE) != 0)) {
+            while ((rev_len = read(client_sock, message, BUF_SIZE)) != 0) {
                 str_len += rev_len;
                 // 回传数据
                 write(client_sock, message, rev_len);
