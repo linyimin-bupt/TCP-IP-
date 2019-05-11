@@ -14,7 +14,7 @@ int main(void) {
     pid_t pid = fork();
 
     if (pid == 0) {
-        read(fds[..0], buf, BUF_SIZE);
+        read(fds[0], buf, BUF_SIZE);
         write(fds[1], str, strlen(str));
     } else {
         read(fds[0], buf, BUF_SIZE);
