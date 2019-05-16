@@ -1,0 +1,360 @@
+Assume that the CPU 0 is executing an application program (user program). At this time, the NIC receives a packet and generates an interrupt for the CPU 0. Then the CPU executes the kernel interrupt (called irq) handler. This handler refers to the interrupt number and then calls the driver interrupt handler. The driver frees the packet transmitted and then calls the napi_schedule() function to process the received packet. This function requests the softirq (software interrupt).
+
+After execution of the driver interrupt handler has been terminated, the control is passed to the kernel handler. The kernel handler executes the interrupt handler for the softirq.
+
+After the interrupt context has been executed, the softirq context will be executed. The interrupt context and the softirq context are executed by an identical thread. However, they use different stacks. And, the interrupt context blocks hardware interrupts; however, the softirq context allows for hardware interrupts.
+
+The softirq handler that processes the received packet is the net_rx_action() function. This function calls the poll() function of the driver. The poll() function calls the netif_receive_skb() function and then sends the received packets one by one to the upper layer. After processing the softirq, the application restarts execution from the stopped point in order to request a system call.
+
+Therefore, the CPU that has received the interrupt processes the received packets from the first to the last. In Linux, BSD, and Microsoft Windows, the processing procedure is basically the same on this wise.
+
+When you check the server CPU utilization, sometimes you can check that only one CPU executes the softirq hard among the server CPUs. The phenomenon occurs due to the way of processing received packets explained so far. To solve the problem, multi-queue NIC, RSS, and RPS have been developed.
+
+Data Structure
+The followings are some key data structures. Take a look at them and review the code.
+
+sk_buff structure
+First, there is the sk_buff structure or skb structure that means a packet. Figure 6 shows some of the sk_buff structure. As the functions have been advanced, they get more complicated. However, the basic functions are very common that anyone can think.
+
+Assume that the CPU 0 is executing an application program (user program). At this time, the NIC receives a packet and generates an interrupt for the CPU 0. Then the CPU executes the kernel interrupt (called irq) handler. This handler refers to the interrupt number and then calls the driver interrupt handler. The driver frees the packet transmitted and then calls the napi_schedule() function to process the received packet. This function requests the softirq (software interrupt).
+
+After execution of the driver interrupt handler has been terminated, the control is passed to the kernel handler. The kernel handler executes the interrupt handler for the softirq.
+
+After the interrupt context has been executed, the softirq context will be executed. The interrupt context and the softirq context are executed by an identical thread. However, they use different stacks. And, the interrupt context blocks hardware interrupts; however, the softirq context allows for hardware interrupts.
+
+The softirq handler that processes the received packet is the net_rx_action() function. This function calls the poll() function of the driver. The poll() function calls the netif_receive_skb() function and then sends the received packets one by one to the upper layer. After processing the softirq, the application restarts execution from the stopped point in order to request a system call.
+
+Therefore, the CPU that has received the interrupt processes the received packets from the first to the last. In Linux, BSD, and Microsoft Windows, the processing procedure is basically the same on this wise.
+
+When you check the server CPU utilization, sometimes you can check that only one CPU executes the softirq hard among the server CPUs. The phenomenon occurs due to the way of processing received packets explained so far. To solve the problem, multi-queue NIC, RSS, and RPS have been developed.
+
+Data Structure
+The followings are some key data structures. Take a look at them and review the code.
+
+sk_buff structure
+First, there is the sk_buff structure or skb structure that means a packet. Figure 6 shows some of the sk_buff structure. As the functions have been advanced, they get more complicated. However, the basic functions are very common that anyone can think.
+
+
+Assume that the CPU 0 is executing an application program (user program). At this time, the NIC receives a packet and generates an interrupt for the CPU 0. Then the CPU executes the kernel interrupt (called irq) handler. This handler refers to the interrupt number and then calls the driver interrupt handler. The driver frees the packet transmitted and then calls the napi_schedule() function to process the received packet. This function requests the softirq (software interrupt).
+
+After execution of the driver interrupt handler has been terminated, the control is passed to the kernel handler. The kernel handler executes the interrupt handler for the softirq.
+
+After the interrupt context has been executed, the softirq context will be executed. The interrupt context and the softirq context are executed by an identical thread. However, they use different stacks. And, the interrupt context blocks hardware interrupts; however, the softirq context allows for hardware interrupts.
+
+The softirq handler that processes the received packet is the net_rx_action() function. This function calls the poll() function of the driver. The poll() function calls the netif_receive_skb() function and then sends the received packets one by one to the upper layer. After processing the softirq, the application restarts execution from the stopped point in order to request a system call.
+
+Therefore, the CPU that has received the interrupt processes the received packets from the first to the last. In Linux, BSD, and Microsoft Windows, the processing procedure is basically the same on this wise.
+
+When you check the server CPU utilization, sometimes you can check that only one CPU executes the softirq hard among the server CPUs. The phenomenon occurs due to the way of processing received packets explained so far. To solve the problem, multi-queue NIC, RSS, and RPS have been developed.
+
+Data Structure
+The followings are some key data structures. Take a look at them and review the code.
+
+sk_buff structure
+First, there is the sk_buff structure or skb structure that means a packet. Figure 6 shows some of the sk_buff structure. As the functions have been advanced, they get more complicated. However, the basic functions are very common that anyone can think.
+
+Assume that the CPU 0 is executing an application program (user program). At this time, the NIC receives a packet and generates an interrupt for the CPU 0. Then the CPU executes the kernel interrupt (called irq) handler. This handler refers to the interrupt number and then calls the driver interrupt handler. The driver frees the packet transmitted and then calls the napi_schedule() function to process the received packet. This function requests the softirq (software interrupt).
+
+After execution of the driver interrupt handler has been terminated, the control is passed to the kernel handler. The kernel handler executes the interrupt handler for the softirq.
+
+After the interrupt context has been executed, the softirq context will be executed. The interrupt context and the softirq context are executed by an identical thread. However, they use different stacks. And, the interrupt context blocks hardware interrupts; however, the softirq context allows for hardware interrupts.
+
+The softirq handler that processes the received packet is the net_rx_action() function. This function calls the poll() function of the driver. The poll() function calls the netif_receive_skb() function and then sends the received packets one by one to the upper layer. After processing the softirq, the application restarts execution from the stopped point in order to request a system call.
+
+Therefore, the CPU that has received the interrupt processes the received packets from the first to the last. In Linux, BSD, and Microsoft Windows, the processing procedure is basically the same on this wise.
+
+When you check the server CPU utilization, sometimes you can check that only one CPU executes the softirq hard among the server CPUs. The phenomenon occurs due to the way of processing received packets explained so far. To solve the problem, multi-queue NIC, RSS, and RPS have been developed.
+
+Data Structure
+The followings are some key data structures. Take a look at them and review the code.
+
+sk_buff structure
+First, there is the sk_buff structure or skb structure that means a packet. Figure 6 shows some of the sk_buff structure. As the functions have been advanced, they get more complicated. However, the basic functions are very common that anyone can think.
+
+
+Assume that the CPU 0 is executing an application program (user program). At this time, the NIC receives a packet and generates an interrupt for the CPU 0. Then the CPU executes the kernel interrupt (called irq) handler. This handler refers to the interrupt number and then calls the driver interrupt handler. The driver frees the packet transmitted and then calls the napi_schedule() function to process the received packet. This function requests the softirq (software interrupt).
+
+After execution of the driver interrupt handler has been terminated, the control is passed to the kernel handler. The kernel handler executes the interrupt handler for the softirq.
+
+After the interrupt context has been executed, the softirq context will be executed. The interrupt context and the softirq context are executed by an identical thread. However, they use different stacks. And, the interrupt context blocks hardware interrupts; however, the softirq context allows for hardware interrupts.
+
+The softirq handler that processes the received packet is the net_rx_action() function. This function calls the poll() function of the driver. The poll() function calls the netif_receive_skb() function and then sends the received packets one by one to the upper layer. After processing the softirq, the application restarts execution from the stopped point in order to request a system call.
+
+Therefore, the CPU that has received the interrupt processes the received packets from the first to the last. In Linux, BSD, and Microsoft Windows, the processing procedure is basically the same on this wise.
+
+When you check the server CPU utilization, sometimes you can check that only one CPU executes the softirq hard among the server CPUs. The phenomenon occurs due to the way of processing received packets explained so far. To solve the problem, multi-queue NIC, RSS, and RPS have been developed.
+
+Data Structure
+The followings are some key data structures. Take a look at them and review the code.
+
+sk_buff structure
+First, there is the sk_buff structure or skb structure that means a packet. Figure 6 shows some of the sk_buff structure. As the functions have been advanced, they get more complicated. However, the basic functions are very common that anyone can think.
+
+Assume that the CPU 0 is executing an application program (user program). At this time, the NIC receives a packet and generates an interrupt for the CPU 0. Then the CPU executes the kernel interrupt (called irq) handler. This handler refers to the interrupt number and then calls the driver interrupt handler. The driver frees the packet transmitted and then calls the napi_schedule() function to process the received packet. This function requests the softirq (software interrupt).
+
+After execution of the driver interrupt handler has been terminated, the control is passed to the kernel handler. The kernel handler executes the interrupt handler for the softirq.
+
+After the interrupt context has been executed, the softirq context will be executed. The interrupt context and the softirq context are executed by an identical thread. However, they use different stacks. And, the interrupt context blocks hardware interrupts; however, the softirq context allows for hardware interrupts.
+
+The softirq handler that processes the received packet is the net_rx_action() function. This function calls the poll() function of the driver. The poll() function calls the netif_receive_skb() function and then sends the received packets one by one to the upper layer. After processing the softirq, the application restarts execution from the stopped point in order to request a system call.
+
+Therefore, the CPU that has received the interrupt processes the received packets from the first to the last. In Linux, BSD, and Microsoft Windows, the processing procedure is basically the same on this wise.
+
+When you check the server CPU utilization, sometimes you can check that only one CPU executes the softirq hard among the server CPUs. The phenomenon occurs due to the way of processing received packets explained so far. To solve the problem, multi-queue NIC, RSS, and RPS have been developed.
+
+Data Structure
+The followings are some key data structures. Take a look at them and review the code.
+
+sk_buff structure
+First, there is the sk_buff structure or skb structure that means a packet. Figure 6 shows some of the sk_buff structure. As the functions have been advanced, they get more complicated. However, the basic functions are very common that anyone can think.
+
+Assume that the CPU 0 is executing an application program (user program). At this time, the NIC receives a packet and generates an interrupt for the CPU 0. Then the CPU executes the kernel interrupt (called irq) handler. This handler refers to the interrupt number and then calls the driver interrupt handler. The driver frees the packet transmitted and then calls the napi_schedule() function to process the received packet. This function requests the softirq (software interrupt).
+
+After execution of the driver interrupt handler has been terminated, the control is passed to the kernel handler. The kernel handler executes the interrupt handler for the softirq.
+
+After the interrupt context has been executed, the softirq context will be executed. The interrupt context and the softirq context are executed by an identical thread. However, they use different stacks. And, the interrupt context blocks hardware interrupts; however, the softirq context allows for hardware interrupts.
+
+The softirq handler that processes the received packet is the net_rx_action() function. This function calls the poll() function of the driver. The poll() function calls the netif_receive_skb() function and then sends the received packets one by one to the upper layer. After processing the softirq, the application restarts execution from the stopped point in order to request a system call.
+
+Therefore, the CPU that has received the interrupt processes the received packets from the first to the last. In Linux, BSD, and Microsoft Windows, the processing procedure is basically the same on this wise.
+
+When you check the server CPU utilization, sometimes you can check that only one CPU executes the softirq hard among the server CPUs. The phenomenon occurs due to the way of processing received packets explained so far. To solve the problem, multi-queue NIC, RSS, and RPS have been developed.
+
+Data Structure
+The followings are some key data structures. Take a look at them and review the code.
+
+sk_buff structure
+First, there is the sk_buff structure or skb structure that means a packet. Figure 6 shows some of the sk_buff structure. As the functions have been advanced, they get more complicated. However, the basic functions are very common that anyone can think.
+
+Assume that the CPU 0 is executing an application program (user program). At this time, the NIC receives a packet and generates an interrupt for the CPU 0. Then the CPU executes the kernel interrupt (called irq) handler. This handler refers to the interrupt number and then calls the driver interrupt handler. The driver frees the packet transmitted and then calls the napi_schedule() function to process the received packet. This function requests the softirq (software interrupt).
+
+After execution of the driver interrupt handler has been terminated, the control is passed to the kernel handler. The kernel handler executes the interrupt handler for the softirq.
+
+After the interrupt context has been executed, the softirq context will be executed. The interrupt context and the softirq context are executed by an identical thread. However, they use different stacks. And, the interrupt context blocks hardware interrupts; however, the softirq context allows for hardware interrupts.
+
+The softirq handler that processes the received packet is the net_rx_action() function. This function calls the poll() function of the driver. The poll() function calls the netif_receive_skb() function and then sends the received packets one by one to the upper layer. After processing the softirq, the application restarts execution from the stopped point in order to request a system call.
+
+Therefore, the CPU that has received the interrupt processes the received packets from the first to the last. In Linux, BSD, and Microsoft Windows, the processing procedure is basically the same on this wise.
+
+When you check the server CPU utilization, sometimes you can check that only one CPU executes the softirq hard among the server CPUs. The phenomenon occurs due to the way of processing received packets explained so far. To solve the problem, multi-queue NIC, RSS, and RPS have been developed.
+
+Data Structure
+The followings are some key data structures. Take a look at them and review the code.
+
+sk_buff structure
+First, there is the sk_buff structure or skb structure that means a packet. Figure 6 shows some of the sk_buff structure. As the functions have been advanced, they get more complicated. However, the basic functions are very common that anyone can think.
+
+Assume that the CPU 0 is executing an application program (user program). At this time, the NIC receives a packet and generates an interrupt for the CPU 0. Then the CPU executes the kernel interrupt (called irq) handler. This handler refers to the interrupt number and then calls the driver interrupt handler. The driver frees the packet transmitted and then calls the napi_schedule() function to process the received packet. This function requests the softirq (software interrupt).
+
+After execution of the driver interrupt handler has been terminated, the control is passed to the kernel handler. The kernel handler executes the interrupt handler for the softirq.
+
+After the interrupt context has been executed, the softirq context will be executed. The interrupt context and the softirq context are executed by an identical thread. However, they use different stacks. And, the interrupt context blocks hardware interrupts; however, the softirq context allows for hardware interrupts.
+
+The softirq handler that processes the received packet is the net_rx_action() function. This function calls the poll() function of the driver. The poll() function calls the netif_receive_skb() function and then sends the received packets one by one to the upper layer. After processing the softirq, the application restarts execution from the stopped point in order to request a system call.
+
+Therefore, the CPU that has received the interrupt processes the received packets from the first to the last. In Linux, BSD, and Microsoft Windows, the processing procedure is basically the same on this wise.
+
+When you check the server CPU utilization, sometimes you can check that only one CPU executes the softirq hard among the server CPUs. The phenomenon occurs due to the way of processing received packets explained so far. To solve the problem, multi-queue NIC, RSS, and RPS have been developed.
+
+Data Structure
+The followings are some key data structures. Take a look at them and review the code.
+
+sk_buff structure
+First, there is the sk_buff structure or skb structure that means a packet. Figure 6 shows some of the sk_buff structure. As the functions have been advanced, they get more complicated. However, the basic functions are very common that anyone can think.
+
+Assume that the CPU 0 is executing an application program (user program). At this time, the NIC receives a packet and generates an interrupt for the CPU 0. Then the CPU executes the kernel interrupt (called irq) handler. This handler refers to the interrupt number and then calls the driver interrupt handler. The driver frees the packet transmitted and then calls the napi_schedule() function to process the received packet. This function requests the softirq (software interrupt).
+
+After execution of the driver interrupt handler has been terminated, the control is passed to the kernel handler. The kernel handler executes the interrupt handler for the softirq.
+
+After the interrupt context has been executed, the softirq context will be executed. The interrupt context and the softirq context are executed by an identical thread. However, they use different stacks. And, the interrupt context blocks hardware interrupts; however, the softirq context allows for hardware interrupts.
+
+The softirq handler that processes the received packet is the net_rx_action() function. This function calls the poll() function of the driver. The poll() function calls the netif_receive_skb() function and then sends the received packets one by one to the upper layer. After processing the softirq, the application restarts execution from the stopped point in order to request a system call.
+
+Therefore, the CPU that has received the interrupt processes the received packets from the first to the last. In Linux, BSD, and Microsoft Windows, the processing procedure is basically the same on this wise.
+
+When you check the server CPU utilization, sometimes you can check that only one CPU executes the softirq hard among the server CPUs. The phenomenon occurs due to the way of processing received packets explained so far. To solve the problem, multi-queue NIC, RSS, and RPS have been developed.
+
+Data Structure
+The followings are some key data structures. Take a look at them and review the code.
+
+sk_buff structure
+First, there is the sk_buff structure or skb structure that means a packet. Figure 6 shows some of the sk_buff structure. As the functions have been advanced, they get more complicated. However, the basic functions are very common that anyone can think.
+Assume that the CPU 0 is executing an application program (user program). At this time, the NIC receives a packet and generates an interrupt for the CPU 0. Then the CPU executes the kernel interrupt (called irq) handler. This handler refers to the interrupt number and then calls the driver interrupt handler. The driver frees the packet transmitted and then calls the napi_schedule() function to process the received packet. This function requests the softirq (software interrupt).
+
+After execution of the driver interrupt handler has been terminated, the control is passed to the kernel handler. The kernel handler executes the interrupt handler for the softirq.
+
+After the interrupt context has been executed, the softirq context will be executed. The interrupt context and the softirq context are executed by an identical thread. However, they use different stacks. And, the interrupt context blocks hardware interrupts; however, the softirq context allows for hardware interrupts.
+
+The softirq handler that processes the received packet is the net_rx_action() function. This function calls the poll() function of the driver. The poll() function calls the netif_receive_skb() function and then sends the received packets one by one to the upper layer. After processing the softirq, the application restarts execution from the stopped point in order to request a system call.
+
+Therefore, the CPU that has received the interrupt processes the received packets from the first to the last. In Linux, BSD, and Microsoft Windows, the processing procedure is basically the same on this wise.
+
+When you check the server CPU utilization, sometimes you can check that only one CPU executes the softirq hard among the server CPUs. The phenomenon occurs due to the way of processing received packets explained so far. To solve the problem, multi-queue NIC, RSS, and RPS have been developed.
+
+Data Structure
+The followings are some key data structures. Take a look at them and review the code.
+
+sk_buff structure
+First, there is the sk_buff structure or skb structure that means a packet. Figure 6 shows some of the sk_buff structure. As the functions have been advanced, they get more complicated. However, the basic functions are very common that anyone can think.
+
+Assume that the CPU 0 is executing an application program (user program). At this time, the NIC receives a packet and generates an interrupt for the CPU 0. Then the CPU executes the kernel interrupt (called irq) handler. This handler refers to the interrupt number and then calls the driver interrupt handler. The driver frees the packet transmitted and then calls the napi_schedule() function to process the received packet. This function requests the softirq (software interrupt).
+
+After execution of the driver interrupt handler has been terminated, the control is passed to the kernel handler. The kernel handler executes the interrupt handler for the softirq.
+
+After the interrupt context has been executed, the softirq context will be executed. The interrupt context and the softirq context are executed by an identical thread. However, they use different stacks. And, the interrupt context blocks hardware interrupts; however, the softirq context allows for hardware interrupts.
+
+The softirq handler that processes the received packet is the net_rx_action() function. This function calls the poll() function of the driver. The poll() function calls the netif_receive_skb() function and then sends the received packets one by one to the upper layer. After processing the softirq, the application restarts execution from the stopped point in order to request a system call.
+
+Therefore, the CPU that has received the interrupt processes the received packets from the first to the last. In Linux, BSD, and Microsoft Windows, the processing procedure is basically the same on this wise.
+
+When you check the server CPU utilization, sometimes you can check that only one CPU executes the softirq hard among the server CPUs. The phenomenon occurs due to the way of processing received packets explained so far. To solve the problem, multi-queue NIC, RSS, and RPS have been developed.
+
+Data Structure
+The followings are some key data structures. Take a look at them and review the code.
+
+sk_buff structure
+First, there is the sk_buff structure or skb structure that means a packet. Figure 6 shows some of the sk_buff structure. As the functions have been advanced, they get more complicated. However, the basic functions are very common that anyone can think.
+
+Assume that the CPU 0 is executing an application program (user program). At this time, the NIC receives a packet and generates an interrupt for the CPU 0. Then the CPU executes the kernel interrupt (called irq) handler. This handler refers to the interrupt number and then calls the driver interrupt handler. The driver frees the packet transmitted and then calls the napi_schedule() function to process the received packet. This function requests the softirq (software interrupt).
+
+After execution of the driver interrupt handler has been terminated, the control is passed to the kernel handler. The kernel handler executes the interrupt handler for the softirq.
+
+After the interrupt context has been executed, the softirq context will be executed. The interrupt context and the softirq context are executed by an identical thread. However, they use different stacks. And, the interrupt context blocks hardware interrupts; however, the softirq context allows for hardware interrupts.
+
+The softirq handler that processes the received packet is the net_rx_action() function. This function calls the poll() function of the driver. The poll() function calls the netif_receive_skb() function and then sends the received packets one by one to the upper layer. After processing the softirq, the application restarts execution from the stopped point in order to request a system call.
+
+Therefore, the CPU that has received the interrupt processes the received packets from the first to the last. In Linux, BSD, and Microsoft Windows, the processing procedure is basically the same on this wise.
+
+When you check the server CPU utilization, sometimes you can check that only one CPU executes the softirq hard among the server CPUs. The phenomenon occurs due to the way of processing received packets explained so far. To solve the problem, multi-queue NIC, RSS, and RPS have been developed.
+
+Data Structure
+The followings are some key data structures. Take a look at them and review the code.
+
+sk_buff structure
+First, there is the sk_buff structure or skb structure that means a packet. Figure 6 shows some of the sk_buff structure. As the functions have been advanced, they get more complicated. However, the basic functions are very common that anyone can think.
+
+Assume that the CPU 0 is executing an application program (user program). At this time, the NIC receives a packet and generates an interrupt for the CPU 0. Then the CPU executes the kernel interrupt (called irq) handler. This handler refers to the interrupt number and then calls the driver interrupt handler. The driver frees the packet transmitted and then calls the napi_schedule() function to process the received packet. This function requests the softirq (software interrupt).
+
+After execution of the driver interrupt handler has been terminated, the control is passed to the kernel handler. The kernel handler executes the interrupt handler for the softirq.
+
+After the interrupt context has been executed, the softirq context will be executed. The interrupt context and the softirq context are executed by an identical thread. However, they use different stacks. And, the interrupt context blocks hardware interrupts; however, the softirq context allows for hardware interrupts.
+
+The softirq handler that processes the received packet is the net_rx_action() function. This function calls the poll() function of the driver. The poll() function calls the netif_receive_skb() function and then sends the received packets one by one to the upper layer. After processing the softirq, the application restarts execution from the stopped point in order to request a system call.
+
+Therefore, the CPU that has received the interrupt processes the received packets from the first to the last. In Linux, BSD, and Microsoft Windows, the processing procedure is basically the same on this wise.
+
+When you check the server CPU utilization, sometimes you can check that only one CPU executes the softirq hard among the server CPUs. The phenomenon occurs due to the way of processing received packets explained so far. To solve the problem, multi-queue NIC, RSS, and RPS have been developed.
+
+Data Structure
+The followings are some key data structures. Take a look at them and review the code.
+
+sk_buff structure
+First, there is the sk_buff structure or skb structure that means a packet. Figure 6 shows some of the sk_buff structure. As the functions have been advanced, they get more complicated. However, the basic functions are very common that anyone can think.
+
+Assume that the CPU 0 is executing an application program (user program). At this time, the NIC receives a packet and generates an interrupt for the CPU 0. Then the CPU executes the kernel interrupt (called irq) handler. This handler refers to the interrupt number and then calls the driver interrupt handler. The driver frees the packet transmitted and then calls the napi_schedule() function to process the received packet. This function requests the softirq (software interrupt).
+
+After execution of the driver interrupt handler has been terminated, the control is passed to the kernel handler. The kernel handler executes the interrupt handler for the softirq.
+
+After the interrupt context has been executed, the softirq context will be executed. The interrupt context and the softirq context are executed by an identical thread. However, they use different stacks. And, the interrupt context blocks hardware interrupts; however, the softirq context allows for hardware interrupts.
+
+The softirq handler that processes the received packet is the net_rx_action() function. This function calls the poll() function of the driver. The poll() function calls the netif_receive_skb() function and then sends the received packets one by one to the upper layer. After processing the softirq, the application restarts execution from the stopped point in order to request a system call.
+
+Therefore, the CPU that has received the interrupt processes the received packets from the first to the last. In Linux, BSD, and Microsoft Windows, the processing procedure is basically the same on this wise.
+
+When you check the server CPU utilization, sometimes you can check that only one CPU executes the softirq hard among the server CPUs. The phenomenon occurs due to the way of processing received packets explained so far. To solve the problem, multi-queue NIC, RSS, and RPS have been developed.
+
+Data Structure
+The followings are some key data structures. Take a look at them and review the code.
+
+sk_buff structure
+First, there is the sk_buff structure or skb structure that means a packet. Figure 6 shows some of the sk_buff structure. As the functions have been advanced, they get more complicated. However, the basic functions are very common that anyone can think.
+
+Assume that the CPU 0 is executing an application program (user program). At this time, the NIC receives a packet and generates an interrupt for the CPU 0. Then the CPU executes the kernel interrupt (called irq) handler. This handler refers to the interrupt number and then calls the driver interrupt handler. The driver frees the packet transmitted and then calls the napi_schedule() function to process the received packet. This function requests the softirq (software interrupt).
+
+After execution of the driver interrupt handler has been terminated, the control is passed to the kernel handler. The kernel handler executes the interrupt handler for the softirq.
+
+After the interrupt context has been executed, the softirq context will be executed. The interrupt context and the softirq context are executed by an identical thread. However, they use different stacks. And, the interrupt context blocks hardware interrupts; however, the softirq context allows for hardware interrupts.
+
+The softirq handler that processes the received packet is the net_rx_action() function. This function calls the poll() function of the driver. The poll() function calls the netif_receive_skb() function and then sends the received packets one by one to the upper layer. After processing the softirq, the application restarts execution from the stopped point in order to request a system call.
+
+Therefore, the CPU that has received the interrupt processes the received packets from the first to the last. In Linux, BSD, and Microsoft Windows, the processing procedure is basically the same on this wise.
+
+When you check the server CPU utilization, sometimes you can check that only one CPU executes the softirq hard among the server CPUs. The phenomenon occurs due to the way of processing received packets explained so far. To solve the problem, multi-queue NIC, RSS, and RPS have been developed.
+
+Data Structure
+The followings are some key data structures. Take a look at them and review the code.
+
+sk_buff structure
+First, there is the sk_buff structure or skb structure that means a packet. Figure 6 shows some of the sk_buff structure. As the functions have been advanced, they get more complicated. However, the basic functions are very common that anyone can think.
+
+Assume that the CPU 0 is executing an application program (user program). At this time, the NIC receives a packet and generates an interrupt for the CPU 0. Then the CPU executes the kernel interrupt (called irq) handler. This handler refers to the interrupt number and then calls the driver interrupt handler. The driver frees the packet transmitted and then calls the napi_schedule() function to process the received packet. This function requests the softirq (software interrupt).
+
+After execution of the driver interrupt handler has been terminated, the control is passed to the kernel handler. The kernel handler executes the interrupt handler for the softirq.
+
+After the interrupt context has been executed, the softirq context will be executed. The interrupt context and the softirq context are executed by an identical thread. However, they use different stacks. And, the interrupt context blocks hardware interrupts; however, the softirq context allows for hardware interrupts.
+
+The softirq handler that processes the received packet is the net_rx_action() function. This function calls the poll() function of the driver. The poll() function calls the netif_receive_skb() function and then sends the received packets one by one to the upper layer. After processing the softirq, the application restarts execution from the stopped point in order to request a system call.
+
+Therefore, the CPU that has received the interrupt processes the received packets from the first to the last. In Linux, BSD, and Microsoft Windows, the processing procedure is basically the same on this wise.
+
+When you check the server CPU utilization, sometimes you can check that only one CPU executes the softirq hard among the server CPUs. The phenomenon occurs due to the way of processing received packets explained so far. To solve the problem, multi-queue NIC, RSS, and RPS have been developed.
+
+Data Structure
+The followings are some key data structures. Take a look at them and review the code.
+
+sk_buff structure
+First, there is the sk_buff structure or skb structure that means a packet. Figure 6 shows some of the sk_buff structure. As the functions have been advanced, they get more complicated. However, the basic functions are very common that anyone can think.
+
+Assume that the CPU 0 is executing an application program (user program). At this time, the NIC receives a packet and generates an interrupt for the CPU 0. Then the CPU executes the kernel interrupt (called irq) handler. This handler refers to the interrupt number and then calls the driver interrupt handler. The driver frees the packet transmitted and then calls the napi_schedule() function to process the received packet. This function requests the softirq (software interrupt).
+
+After execution of the driver interrupt handler has been terminated, the control is passed to the kernel handler. The kernel handler executes the interrupt handler for the softirq.
+
+After the interrupt context has been executed, the softirq context will be executed. The interrupt context and the softirq context are executed by an identical thread. However, they use different stacks. And, the interrupt context blocks hardware interrupts; however, the softirq context allows for hardware interrupts.
+
+The softirq handler that processes the received packet is the net_rx_action() function. This function calls the poll() function of the driver. The poll() function calls the netif_receive_skb() function and then sends the received packets one by one to the upper layer. After processing the softirq, the application restarts execution from the stopped point in order to request a system call.
+
+Therefore, the CPU that has received the interrupt processes the received packets from the first to the last. In Linux, BSD, and Microsoft Windows, the processing procedure is basically the same on this wise.
+
+When you check the server CPU utilization, sometimes you can check that only one CPU executes the softirq hard among the server CPUs. The phenomenon occurs due to the way of processing received packets explained so far. To solve the problem, multi-queue NIC, RSS, and RPS have been developed.
+
+Data Structure
+The followings are some key data structures. Take a look at them and review the code.
+
+sk_buff structure
+First, there is the sk_buff structure or skb structure that means a packet. Figure 6 shows some of the sk_buff structure. As the functions have been advanced, they get more complicated. However, the basic functions are very common that anyone can think.
+
+Assume that the CPU 0 is executing an application program (user program). At this time, the NIC receives a packet and generates an interrupt for the CPU 0. Then the CPU executes the kernel interrupt (called irq) handler. This handler refers to the interrupt number and then calls the driver interrupt handler. The driver frees the packet transmitted and then calls the napi_schedule() function to process the received packet. This function requests the softirq (software interrupt).
+
+After execution of the driver interrupt handler has been terminated, the control is passed to the kernel handler. The kernel handler executes the interrupt handler for the softirq.
+
+After the interrupt context has been executed, the softirq context will be executed. The interrupt context and the softirq context are executed by an identical thread. However, they use different stacks. And, the interrupt context blocks hardware interrupts; however, the softirq context allows for hardware interrupts.
+
+The softirq handler that processes the received packet is the net_rx_action() function. This function calls the poll() function of the driver. The poll() function calls the netif_receive_skb() function and then sends the received packets one by one to the upper layer. After processing the softirq, the application restarts execution from the stopped point in order to request a system call.
+
+Therefore, the CPU that has received the interrupt processes the received packets from the first to the last. In Linux, BSD, and Microsoft Windows, the processing procedure is basically the same on this wise.
+
+When you check the server CPU utilization, sometimes you can check that only one CPU executes the softirq hard among the server CPUs. The phenomenon occurs due to the way of processing received packets explained so far. To solve the problem, multi-queue NIC, RSS, and RPS have been developed.
+
+Data Structure
+The followings are some key data structures. Take a look at them and review the code.
+
+sk_buff structure
+First, there is the sk_buff structure or skb structure that means a packet. Figure 6 shows some of the sk_buff structure. As the functions have been advanced, they get more complicated. However, the basic functions are very common that anyone can think.
+
+Assume that the CPU 0 is executing an application program (user program). At this time, the NIC receives a packet and generates an interrupt for the CPU 0. Then the CPU executes the kernel interrupt (called irq) handler. This handler refers to the interrupt number and then calls the driver interrupt handler. The driver frees the packet transmitted and then calls the napi_schedule() function to process the received packet. This function requests the softirq (software interrupt).
+
+After execution of the driver interrupt handler has been terminated, the control is passed to the kernel handler. The kernel handler executes the interrupt handler for the softirq.
+
+After the interrupt context has been executed, the softirq context will be executed. The interrupt context and the softirq context are executed by an identical thread. However, they use different stacks. And, the interrupt context blocks hardware interrupts; however, the softirq context allows for hardware interrupts.
+
+The softirq handler that processes the received packet is the net_rx_action() function. This function calls the poll() function of the driver. The poll() function calls the netif_receive_skb() function and then sends the received packets one by one to the upper layer. After processing the softirq, the application restarts execution from the stopped point in order to request a system call.
+
+Therefore, the CPU that has received the interrupt processes the received packets from the first to the last. In Linux, BSD, and Microsoft Windows, the processing procedure is basically the same on this wise.
+
+When you check the server CPU utilization, sometimes you can check that only one CPU executes the softirq hard among the server CPUs. The phenomenon occurs due to the way of processing received packets explained so far. To solve the problem, multi-queue NIC, RSS, and RPS have been developed.
+
+Data Structure
+The followings are some key data structures. Take a look at them and review the code.
+
+sk_buff structure
+First, there is the sk_buff structure or skb structure that means a packet. Figure 6 shows some of the sk_buff structure. As the functions have been advanced, they get more complicated. However, the basic functions are very common that anyone can think.
