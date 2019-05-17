@@ -71,9 +71,9 @@ int main(int argc, char *argv[]) {
             write(client_sock, message, str_len);
             printf("Message from client: %s\n", message);
         }
+        close(client_sock);
 
     }
-    close(client_sock);
     close(server_sock);
     return 0;
 }

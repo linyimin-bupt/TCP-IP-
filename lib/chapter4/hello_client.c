@@ -55,6 +55,7 @@ int main(int argc, char *argv[]) {
         message[str_len] = '\0';
         printf("Message from server: %s", message);
     }
+    close(sock);
     return 0;
 }
 
