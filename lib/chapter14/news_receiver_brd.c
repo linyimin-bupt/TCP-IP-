@@ -3,7 +3,7 @@
 #include <arpa/inet.h>
 #include <string.h>
 #include <sys/socket.h>
-9
+
 #define BUF_SIZE 1024
 
 void error_handling(char *message);
