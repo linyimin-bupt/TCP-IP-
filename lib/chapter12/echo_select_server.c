@@ -43,60 +43,57 @@ int main(int argc, char *argv[]) {
     }
 
     // 使用多路复用处理来自客户端的请求
-//    fd_set reads, temps;
-//    struct timeval timeout;
-//
-//    FD_ZERO(&reads);
-//    FD_SET(server_sock, &reads);
-//    int fd_max = server_sock;
+    fd_set reads, temps;
+    struct timeval timeout;
 
-    sleep(1000);
+    FD_ZERO(&reads);
+    FD_SET(server_sock, &reads);
+    int fd_max = server_sock;
 
+    while (1) {
+        temps = reads;
+        timeout.tv_usec = 200;
+        timeout.tv_sec = 200;
+        int result = select(fd_max + 1, &temps, 0, 0, &timeout);
 
-//    while (1) {
-//        temps = reads;
-//        timeout.tv_usec = 200;
-//        timeout.tv_sec = 200;
-//        int result = select(fd_max + 1, &temps, 0, 0, &timeout);
-//
-//        if (result == -1) {
-//            error_handling("select() error");
-//            break;
-//        }
-//
-//        if (result == 0) {
-//            puts("Time-out");
-//            continue;
-//        } else {
-//            for (int i = 0; i < fd_max + 1; i++) {
-//                if (FD_ISSET(i, &temps)) {
-//                    // connection request
-//
-//                    if (i == server_sock) {
-//                        socklen_t client_addr_size = sizeof(client_addr);
-//                        client_sock = accept(server_sock, (struct sockaddr *) &client_addr, &client_addr_size);
-//                        FD_SET(client_sock, &reads);
-//                        if (client_sock > fd_max) {
-//                            fd_max = client_sock;
-//                        }
-//
-//                        printf("Connected client: %d \n", client_sock);
-//                    } else {
-//                        int str_len = read(i, message, BUF_SIZE);
-//
-//                        if (str_len == 0) {
-//                            FD_CLR(i, &reads);
-//                            close(i);
-//                            printf("closed client: %d \n", i);
-//                        } else {
-//                            // echo!
-//                            write(i, message, str_len);
-//                        }
-//                    }
-//                }
-//            }
-//        }
-//    }
+        if (result == -1) {
+            error_handling("select() error");
+            break;
+        }
+
+        if (result == 0) {
+            puts("Time-out");
+            continue;
+        } else {
+            for (int i = 0; i < fd_max + 1; i++) {
+                if (FD_ISSET(i, &temps)) {
+                    // connection request
+
+                    if (i == server_sock) {
+                        socklen_t client_addr_size = sizeof(client_addr);
+                        client_sock = accept(server_sock, (struct sockaddr *) &client_addr, &client_addr_size);
+                        FD_SET(client_sock, &reads);
+                        if (client_sock > fd_max) {
+                            fd_max = client_sock;
+                        }
+
+                        printf("Connected client: %d \n", client_sock);
+                    } else {
+                        int str_len = read(i, message, BUF_SIZE);
+
+                        if (str_len == 0) {
+                            FD_CLR(i, &reads);
+                            close(i);
+                            printf("closed client: %d \n", i);
+                        } else {
+                            // echo!
+                            write(i, message, str_len);
+                        }
+                    }
+                }
+            }
+        }
+    }
     close(server_sock);
     return 0;
 }
